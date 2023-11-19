@@ -53,6 +53,10 @@ Number range ensures that data values are accurate and conform to expected value
 	from  DataQualityFrameworkGovernance  import  Accuracy as ac
 	print(ac.filter_number_range(dataframe, 'range_column_name', lower_bound, upper_bound))
 
+	Example:
+	print(ac.filter_number_range(df, 'Age', 4, 12))
+	(Output will extract the age between 4(lower bound) and 12 (upper bound) from column 'Age' in the dataset 'df')
+
 </details>
 
 <details>
@@ -352,38 +356,133 @@ Count the number of rows & columns in a DataFrame.
 
 </ul>
 </details>
-  
+
+
+<details open>
+<summary><b>Data Interoperability</b></summary>
+
+<ul>
+
+<details>
+<summary><i>data_migration_reconciliation</i></summary>
+
+**Data migration reconciliation** is a crucial step in ensuring the accuracy and integrity of data transfer between a source and target system. The process involves comparison of the source and target data to identify any disparities. If the columns in both datasets differ, the process returns an ouput to align the source and target dataset. 
+
+**Output of column name mismatch**
+| Column | MatchStatus | TableLocation |
+|--|--|--|
+| Department | Unmatched | Source |
+| Departmentt | Unmatched | Target |
+| EmployeeID | Matched | NotApplicable |
+
+After structural alignment is confirmed, a comprehensive check is performed by comparing the content of each column. Any inconsistencies between the source and target data are flagged as mismatches. This includes the identification of specific 'column name(s)' where discrepancies occur, 'row number or position' and 'mismatched records' in both the source and target datasets. This comprehensive reporting ensures that discrepancies can be easily located and addressed, promoting data accuracy and the successful completion of the migration process.
+
+  	from  DataQualityFrameworkGovernance  import  Interoperability as io
+	print(io.data_migration_reconciliation(source_dataframe, target_dataframe))
+
+	#Example of saving source and target dataframe from csv file
+
+	import pandas as pd
+	source_dataframe = pd.read_csv('source_data.csv')
+	target_dataframe = pd.read_csv('target_data.csv')
+
+**Result**
+| Column | Row no. / Position |Source Data |Target Data |
+|--|--|--|--|
+| Column name | 2 | 33 | 3 |
+| Column name | 289 | Donald Trump | Donald Duck |  
+
+</details>
+
+<details>
+<summary><i>data_integration_reconciliation</i></summary>
+
+**Data integration reconciliation** involves combining data from different sources into a unified view. This function compares two datasets, source_dataset and target_dataset, based on a unique identifier, ID. It checks for disparities in each column, cell by cell, between the two datasets. For each mismatch, it identifies the specific column and provides a status of "Matched" or "Mismatched." If the columns in both datasets differ, the process returns an ouput to align the source and target dataset. 
+
+**Example output of column name mismatch**
+| Column | MatchStatus | TableLocation |
+|--|--|--|
+| Department | Unmatched | Source |
+| Departmentt | Unmatched | Target |
+| EmployeeID | Matched | NotApplicable |
+
+After structural alignment is confirmed, a comprehensive check is performed by comparing the content of each column. Any inconsistencies between the source and target data are flagged as mismatches.
+
+**Parameters:**
+
+**source_dataset:** The source dataset, a DataFrame containing the data to be compared.
+**target_dataset:** The target dataset, a DataFrame containing the data to be compared against the source dataset
+**ID**: A unique identifier column present in both datasets, used to match rows between the two datasets.
+
+**Return Value:**
+
+**status:** A string indicating the overall comparison status, either "Matched" or "Mismatched."
+**mismatched_columns:** A list of columns that have mismatches between the two datasets.
+
+  	from  DataQualityFrameworkGovernance  import  Interoperability as io
+
+	source_dataset = pd.DataFrame({
+		'Ordinal': [54, 55, 56, 57],
+		'Name': ['Theresa May','Boris Johnson', 'Liz Truss', 'Rishi Sunak'],
+		'Monarch': ['Elizabeth II', 'Elizabeth II', 'Elizabeth II & Charles III', 'Charles III']
+		})
+
+	target_dataset = pd.DataFrame({
+		'Ordinal': [55, 56, 57],
+		'Name': ['Boris Johnson', 'Liz Truss', 'Rishi Sunak'],
+		'Monarch': ['Elizabeth II', 'Elizabeth II', 'Charles III']
+		})
+
+	comparison_results = io.data_integration_reconciliation(source_dataset, target_dataset, 'Ordinal')
+	print(comparison_results)
+
+
+**Result**
+| Ordinal | Status | Mismatched_Columns | Name_source | Name_target | Monarch_source | Monarch_target |
+|--|--|--|--|--|--|--|
+|54|Mismatch|Name, Monarch|Theresa May|NaN|Elizabeth II|NaN|
+|56|Mismatch|Monarch| Liz Truss| Liz Truss|Elizabeth II & Charles III|Elizabeth II|
+|55|Match|None|Boris Johnson|Boris Johnson|Elizabeth II|Elizabeth II|
+|57|Match|None|Rishi Sunak|Rishi Sunak|Charles III|Charles III|
+
+</details>
+
+<details>
+<summary><i>data_consolidation</i></summary>
+
+**Data consolidation** is a process of combining information from multiple datasets to create a unified dataset. This function with three parameters – dataset1, dataset2, and a parameter to determine consolidation direction (0 for rows ,1 for columns), users can choose between consolidating data by rows or columns.
+
+**Compile by Rows (0):**
+
+When choosing compile=0, the function will stack the datasets vertically, effectively appending the rows of dataset2 beneath the rows of dataset1.
+
+**Compile by Columns (1):**
+
+Alternatively, selecting compile=1 will concatenate the datasets side by side, merging columns from dataset2 to the right of those from dataset1.
+
+  	from  DataQualityFrameworkGovernance  import  Interoperability as io
+
+	CompileByColumns = io.data_consolidation(df1, df2,1)
+	CompileByRows = io.data_consolidation(df1, df2,0)
+
+</details>
+
+</ul>
+</details> 
 
 ****
 
-  
-
-  
-
 **Supporting python libraries:**
-
   
 
 - Pandas
 - re
   
 
-  
-
 ****
-
-  
 
 [Homepage](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance)
 
-  
-
-  
-
-[Bug Tracker](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/issues)
-
-  
-
-  
+[Bug Tracker](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/issues)  
 
 [Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
