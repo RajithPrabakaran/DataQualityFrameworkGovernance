@@ -419,6 +419,7 @@ After structural alignment is confirmed, a comprehensive check is performed by c
 **status:** A string indicating the overall comparison status, either "Matched" or "Mismatched."
 **mismatched_columns:** A list of columns that have mismatches between the two datasets.
 
+	import pandas as pd
   	from  DataQualityFrameworkGovernance  import  Interoperability as io
 
 	source_dataset = pd.DataFrame({
@@ -438,12 +439,12 @@ After structural alignment is confirmed, a comprehensive check is performed by c
 
 
 **Result**
-| Ordinal | Status | Mismatched_Columns | Name_source | Name_target | Monarch_source | Monarch_target |
-|--|--|--|--|--|--|--|
-|54|Mismatch|Name, Monarch|Theresa May|NaN|Elizabeth II|NaN|
-|56|Mismatch|Monarch| Liz Truss| Liz Truss|Elizabeth II & Charles III|Elizabeth II|
-|55|Match|None|Boris Johnson|Boris Johnson|Elizabeth II|Elizabeth II|
-|57|Match|None|Rishi Sunak|Rishi Sunak|Charles III|Charles III|
+| Ordinal | Status | Mismatched_Columns | MergeStatus | Name_source | Name_target | Monarch_source | Monarch_target |
+|--|--|--|--|--|--|--|--|
+|54|Mismatch|Name, Monarch|left_only|Theresa May|NaN|Elizabeth II|NaN|
+|56|Mismatch|Monarch|both| Liz Truss| Liz Truss|Elizabeth II & Charles III|Elizabeth II|
+|55|Match|None|both|Boris Johnson|Boris Johnson|Elizabeth II|Elizabeth II|
+|57|Match|None|both|Rishi Sunak|Rishi Sunak|Charles III|Charles III|
 
 </details>
 
