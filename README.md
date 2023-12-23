@@ -27,13 +27,22 @@ User configures **DataframeDictionary** and **DataFunctionConfig** in JSON file,
 	from DataQualityFrameworkGovernance.DataWorkflow import DataPipeline as dp
 	
 	json_config_file = 'https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/dq_pipeline_config.json'
-	output_csv = 'full path of system location to save the output / result - [OPTIONAL, if the result to be saved in a CSV file]'
+	#output_csv = 'full path of system location to save the output / result - [OPTIONAL, if the result to be saved in a CSV file]'
 	
 	print(dp.processing_framework(json_config_file))
 
 *The output_csv parameter is optional in 'processing_framework' function, and if specified, the result will be saved **exclusively in CSV file format.** Please provide the full path, including the desired CSV file name, for saving the output.*
 
 *Refer [DataWorkflow](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/blob/main/DataQualityFrameworkGovernance.png)*, *[Pre-configured Json sample](https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/dq_pipeline_config.json)*
+
+**Result**
+|DateTime|DQ#|Dataset_name|DQ_Dimension|DQ_Rule/Function_name|Error_in_JSON|Error log|DQ_Rule/Function_description|DQ_Valid_count|DQ_Invalid_count|DQ_Total_count|DQ_Valid%|DQ_Invalid%|DQ_Flag_Inclusion|Data_enabled|Function_enabled|Parameter_enabled|Source|
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|2023-12-23 11:44:13.324231|DQFGCP02|ecomm_data|Completeness|DataQualityFrameworkGovernance.Completeness.missing_values_in_column|No|No error in JSON config|"Parameter: df: 'ecomm_data', columnname: 'address2', calculate: 'Yes'"|7|43|50|14.000000000000002|86.0|Y|True|True|True|https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv|
+|2023-12-23 11:44:13.339754|DQFGCP01|ecomm_data|Completeness|DataQualityFrameworkGovernance.Completeness.missing_values_in_dataset|No|No error in JSON config|"Parameter: df: 'ecomm_data', calculate: 'Yes'"|770|80|50|90.58823529411765|9.411764705882353|Y|True|True|True|https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv|
+|2023-12-23 11:44:13.361530|DQFGAC01|ecomm_data|Accuracy|DataQualityFrameworkGovernance.Accuracy.accuracy_tolerance_numeric|No|No error in JSON config|"Parameter: df: 'ecomm_data', base_column: 'actual_price', lookup_column: 'discounted_price', tolerance_percentage: '0', calculate: 'Yes'"|0|50|50|0.0|100.0|Y|True|True|True|https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv|
+|2023-12-23 11:44:13.379107|DQFGAC02|ecomm_data|Accuracy|DataQualityFrameworkGovernance.Accuracy.accurate_number_range|No|No error in JSON config|"Parameter: df: 'ecomm_data', range_column_name: 'actual_price', lower_bound: '1', upper_bound: '1000', calculate: 'Yes'"|50|0|50|100.0|0.0|Y|True|True|True|https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv|
+|2023-12-23 11:44:13.395435|DQFGAC03|ecomm_data|Accuracy|DataQualityFrameworkGovernance.Accuracy.accurate_datetime_range|No|No error in JSON config|"Parameter: df: 'ecomm_data', range_column_name: 'purchase_datetime', from_date: '2023-05-01', to_date: '2023-05-28', date_format: '%Y-%m-%d', calculate: 'Yes'"|22|28|50|44.0|56.00000000000001|Y|True|True|True|https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv|
 
 </details>
 </ul>
