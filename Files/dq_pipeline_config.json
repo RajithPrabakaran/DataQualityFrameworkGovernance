@@ -80,6 +80,16 @@
                 "date_format":"%Y-%m-%d %H:%M:%S",
                 "calculate":"Yes"
                 }]
+        },
+        {
+            "enabled": true,
+            "function_path": "DataQualityFrameworkGovernance.Uniqueness.unique_column_values",
+            "parameters": [{
+                "enabled": true,
+                "df":"ecomm_data",
+                "col_name":"product_id",
+                "calculate":"Yes"
+                }]
         }
     ]
 }
