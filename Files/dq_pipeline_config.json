@@ -1,0 +1,66 @@
+{
+    "DataFrameDictionary": 
+    {
+        "data1": {"enabled": true,"data_path": "https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/data1.csv"},
+        "data2": {"enabled": true,"data_path": "https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/data2.csv"},
+        "ecomm_data": {"enabled": true,"data_path": "https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv"}
+    },
+
+    "DataFunctionConfig":
+    [
+        {
+            "user_info":"Identifying completeness in a column - this line is user remark",
+            "enabled": true,
+            "function_path": "DataQualityFrameworkGovernance.Completeness.missing_values_in_column",
+            "parameters": [{
+                "enabled": true,
+                "df":"ecomm_data",
+                "columnname":"address2",
+                "calculate":"Yes"
+                }]
+        },
+        {
+            "Comments":"Identifying completeness in a dataset - this line is user remark",
+            "enabled": true,
+            "function_path": "DataQualityFrameworkGovernance.Completeness.missing_values_in_dataset",
+            "parameters": [{
+                "enabled": true,
+                "df":"ecomm_data",
+                "calculate":"Yes"
+                }]
+        },
+        {
+            "Comments":"accuracy_tolerance_numeric",
+            "enabled": true,
+            "function_path": "DataQualityFrameworkGovernance.Accuracy.accuracy_tolerance_numeric",
+            "parameters": [{"enabled": true,"df":"ecomm_data","base_column":"actual_price", "lookup_column":"discounted_price", "tolerance_percentage":0,"calculate":"Yes"}]
+        },
+        {
+            "price details": "checking the price details within a range of value, lower bound and upper bound",
+            "enabled": true,
+            "function_path": "DataQualityFrameworkGovernance.Accuracy.accurate_number_range",
+            "parameters": [{
+                "enabled": true,
+                "df":"ecomm_data",
+                "range_column_name":"actual_price",
+                "lower_bound":1, 
+                "upper_bound":1000,
+                "calculate":"Yes"
+                }]
+        },
+        {
+            "date comments":"Date format should be same as source date format",
+            "enabled": true,
+            "function_path": "DataQualityFrameworkGovernance.Accuracy.accurate_datetime_range",
+            "parameters": [{
+                "enabled": true,
+                "df":"ecomm_data",
+                "range_column_name":"purchase_datetime",
+                "from_date":"2023-05-01",
+                "to_date":"2023-05-28",
+                "date_format":"%Y-%m-%d",
+                "calculate":"Yes"
+                }]
+        }
+    ]
+}
