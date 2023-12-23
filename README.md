@@ -491,15 +491,10 @@ Alternatively, selecting compile=1 will concatenate the datasets side by side, m
 </ul>
 </details> 
 
-****
-
-**Supporting python libraries:**
+## Supporting python libraries:
   
 
 - Pandas, re, requests
-  
-
-****
 
 [Homepage](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance)
 
