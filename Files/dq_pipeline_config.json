@@ -68,6 +68,18 @@
                 "date_format":"%Y-%m-%d",
                 "calculate":"Yes"
                 }]
+        },
+        {
+            "enabled": true,
+            "function_path": "DataQualityFrameworkGovernance.Consistency.start_end_date_consistency",
+            "parameters": [{
+                "enabled": true,
+                "df":"ecomm_data",
+                "start_date_column_name":"purchase_datetime",
+                "end_date_column_name":"refund_date",
+                "date_format":"%Y-%m-%d %H:%M:%S",
+                "calculate":"Yes"
+                }]
         }
     ]
 }
