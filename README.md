@@ -1,13 +1,9 @@
 
-  
-
 # Data Quality Framework Governance (DQFG)
-  
 
 **Data Quality Framework Governance** is a structured approach to assessing, monitoring, and improving the quality of data. An effective **Data Quality Framework** considers these dimensions and integrates them into a structured approach to ensure that data serves its intended purpose, supports informed decision-making, and maintains the trust of users and stakeholders.
 
 **Data Quality** is an ongoing process that requires continuous monitoring, assessment, and improvement to adapt to changing data requirements and evolving business needs.
-
 
 **Example:** To call functions from the library.
 
@@ -15,10 +11,35 @@
 	print(uq.duplicate_rows(dataframe))
 
 
-**Library structure**
+## Data Quality Framework (DataWorkflow & DataPipeline)
 
-****
-  
+<details open>
+<summary><b>DataWorkflow.DataPipeline</b></summary>
+
+<ul>
+
+<details>
+<summary><i>processing_framework</i></summary>
+
+User configures **DataframeDictionary** and **DataFunctionConfig** in JSON file, based on the JSON file data pipeline processing will be performed in  processing framework.
+
+	import pandas as pd
+	from DataQualityFrameworkGovernance.DataWorkflow import DataPipeline as dp
+	
+	json_config_file = 'https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/dq_pipeline_config.json'
+	output_csv = 'full path of system location to save the output / result - [OPTIONAL, if the result to be saved in a CSV file]'
+	
+	print(dp.processing_framework(json_config_file))
+
+*The output_csv parameter is optional in 'processing_framework' function, and if specified, the result will be saved **exclusively in CSV file format.** Please provide the full path, including the desired CSV file name, for saving the output.*
+
+*Refer [DataWorkflow](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/blob/main/DataQualityFrameworkGovernance.png)*, *[Pre-configured Json sample](https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/dq_pipeline_config.json)*
+
+</details>
+</ul>
+</details>
+
+## Library structure
 
 <details open>
 <summary><b>Accuracy</b></summary>
@@ -36,41 +57,31 @@ Calculating data quality accuracy of a set of values (base values) by comparing 
 </details>
 
 <details>
-<summary><i>email_pattern</i></summary>
-
-Validating accuracy of email addresses in a dataset by verifying that they follow a valid email format.
-
-	from  DataQualityFrameworkGovernance  import  Accuracy as ac
-	print(ac.email_pattern(dataframe,'email_column_name'))
-
-</details>
-
-<details>
-<summary><i>filter_number_range</i></summary>
+<summary><i>accurate_number_range</i></summary>
 
 Number range ensures that data values are accurate and conform to expected values or constraints. It is applicable to a variety of contexts, including exam scores, weather conditions, pricing, stock prices, age, income, speed limits for vehicles, water levels, and numerous other scenarios.
 
 	from  DataQualityFrameworkGovernance  import  Accuracy as ac
-	print(ac.filter_number_range(dataframe, 'range_column_name', lower_bound, upper_bound))
+	print(ac.accurate_number_range(dataframe, 'range_column_name', lower_bound, upper_bound))
 
 	Example:
-	print(ac.filter_number_range(df, 'Age', 4, 12))
+	print(ac.accurate_number_range(df, 'Age', 4, 12))
 	(Output will extract the age between 4(lower bound) and 12 (upper bound) from column 'Age' in the dataset 'df')
 
 </details>
 
 <details>
-<summary><i>filter_datetime_range</i></summary>
+<summary><i>accurate_datetime_range</i></summary>
 
 The datetime range filter guarantees the accuracy and adherence of data values to predetermined criteria or constraints. It is applicable to a variety of contexts, including capturing outliers in date of birth, age and many more.
 
 	from  DataQualityFrameworkGovernance  import  Accuracy as ac
-	print(ac.filter_datetime_range(Dataframe, 'range_column_name', 'from_date', 'to_date', 'date_format'))
+	print(ac.accurate_datetime_range(Dataframe, 'range_column_name', 'from_date', 'to_date', 'date_format'))
 
 	Example:
-	print(ac.filter_datetime_range(df, 'Date', '2023-01-15', '2023-03-01', '%Y-%m-%d'))
+	print(ac.accurate_datetime_range(df, 'Date', '2023-01-15', '2023-03-01', '%Y-%m-%d'))
 
-**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'*  ***(It can be specified in any format, parameter value to be aligned appropriately).***
+**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'* (Date format should be same as *source date format*) ***(It can be specified in any format aligned to *source* date format, parameter value to be aligned appropriately).***
 
 </details>
 
@@ -83,23 +94,22 @@ The datetime range filter guarantees the accuracy and adherence of data values t
 <ul>
 
 <details>
-<summary><i>missing_values</i></summary>
+<summary><i>missing_values_in_column</i></summary>
 
 Summary of missing values in each column.
 
 	from  DataQualityFrameworkGovernance  import  Completeness as cp
-	print(cp.missing_values(dataframe))
+	print(cp.missing_values_in_column(dataframe))
 
 </details>
 
 <details>
-<summary><i>overall_completeness_percentage</i></summary>
+<summary><i>missing_values_in_dataset</i></summary>
 
-Percentage of missing values in a DataFrame. 
+Summary of missing values in a dataset.
 
-  
 	from  DataQualityFrameworkGovernance  import  Completeness as cp
-	print(cp.overall_completeness_percentage(dataframe))
+	print(cp.missing_values_in_dataset(dataframe))
 
 </details>
 
@@ -204,6 +214,16 @@ Count age based on the criteria in a dataset.
 
   	from  DataQualityFrameworkGovernance  import  Validity as vl
 	print(vl.validate_age_count(dataframe, 'age_column', min_age, max_age))
+
+</details>
+
+<details>
+<summary><i>vaild_email_pattern</i></summary>
+
+Validating accuracy of email addresses in a dataset by verifying that they follow a valid email format.
+
+	from  DataQualityFrameworkGovernance  import  Validity as vl
+	print(vl.valid_email_pattern(dataframe,'email_column_name'))
 
 </details>
 
@@ -476,14 +496,17 @@ Alternatively, selecting compile=1 will concatenate the datasets side by side, m
 **Supporting python libraries:**
   
 
-- Pandas
-- re
+- Pandas, re, requests
   
 
 ****
 
 [Homepage](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance)
 
-[Bug Tracker](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/issues)  
+[DQ Framework Design](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/blob/main/DataQualityFrameworkGovernance.png)
+
+[Github Documentation](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance)
+
+[Bug Tracker](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/issues) 
 
 [Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
