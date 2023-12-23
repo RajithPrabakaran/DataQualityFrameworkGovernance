@@ -9,7 +9,7 @@
     "DataFunctionConfig":
     [
         {
-            "user_info":"Identifying completeness in a column - this line is user remark",
+            "user_info":"Identifying completeness in a column - this line is user remark [OPTIONAL]",
             "enabled": true,
             "function_path": "DataQualityFrameworkGovernance.Completeness.missing_values_in_column",
             "parameters": [{
@@ -20,7 +20,7 @@
                 }]
         },
         {
-            "Comments":"Identifying completeness in a dataset - this line is user remark",
+            "Comments":"Identifying completeness in a dataset - this line is user remark [OPTIONAL]",
             "enabled": true,
             "function_path": "DataQualityFrameworkGovernance.Completeness.missing_values_in_dataset",
             "parameters": [{
@@ -30,13 +30,20 @@
                 }]
         },
         {
-            "Comments":"accuracy_tolerance_numeric",
+            "Comments":"accuracy_tolerance_numeric [OPTIONAL]",
             "enabled": true,
             "function_path": "DataQualityFrameworkGovernance.Accuracy.accuracy_tolerance_numeric",
-            "parameters": [{"enabled": true,"df":"ecomm_data","base_column":"actual_price", "lookup_column":"discounted_price", "tolerance_percentage":0,"calculate":"Yes"}]
+            "parameters": [{
+                "enabled": true,
+                "df":"ecomm_data",
+                "base_column":"actual_price",
+                "lookup_column":"discounted_price",
+                "tolerance_percentage":0,
+                "calculate":"Yes"
+                }]
         },
         {
-            "price details": "checking the price details within a range of value, lower bound and upper bound",
+            "price details": "checking the price details within a range of value, lower bound and upper bound [OPTIONAL]",
             "enabled": true,
             "function_path": "DataQualityFrameworkGovernance.Accuracy.accurate_number_range",
             "parameters": [{
@@ -49,7 +56,7 @@
                 }]
         },
         {
-            "date comments":"Date format should be same as source date format",
+            "date comments":"Date format should be same as source date format [OPTIONAL]",
             "enabled": true,
             "function_path": "DataQualityFrameworkGovernance.Accuracy.accurate_datetime_range",
             "parameters": [{
