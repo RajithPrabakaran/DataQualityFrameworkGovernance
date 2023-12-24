@@ -92,6 +92,7 @@
                 }]
         },
         {
+            "Comments":"Important: Array list to be called without double quotes outside array list",
             "enabled": true,
             "function_path": "DataQualityFrameworkGovernance.Validity.isMetadataMember",
             "parameters": [{
