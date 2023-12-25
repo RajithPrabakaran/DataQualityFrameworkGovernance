@@ -402,7 +402,7 @@ Examines each value in a **dataset** and appends a new column for each existing 
 </ul>
 </details>
 
-## Other library structure
+## Optional library structure
 <details>
 <summary><b>Datastats</b></summary>
 
@@ -492,6 +492,7 @@ After structural alignment is confirmed, a comprehensive check is performed by c
 
 </details>
 
+
 <details>
 <summary><i>data_integration_reconciliation</i></summary>
 
@@ -568,6 +569,34 @@ Alternatively, selecting compile=1 will concatenate the datasets side by side, m
 
 </ul>
 </details> 
+
+<details>
+<summary><b>Tools</b></summary>
+
+<ul>
+
+<details>
+<summary><i>csv_to_json</i></summary>
+
+CSV to JSON converter.
+
+    from DataQualityFrameworkGovernance import Tools as tl
+    print(tl.csv_to_json(input_csv_file, output_json_file))
+
+</details>
+
+<details>
+<summary><i>json_to_csv</i></summary>
+
+JSON to CSV converter.
+
+    from DataQualityFrameworkGovernance import Tools as tl
+    print(tl.json_to_csv(input_json_file, output_csv_file))
+
+</details>
+
+</ul>
+</details>
 
 ## Supporting python libraries:
   
