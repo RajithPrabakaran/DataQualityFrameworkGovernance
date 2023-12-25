@@ -1,16 +1,85 @@
+
 # Data Quality Framework Governance (DQFG)
 
-**Data Quality Framework Governance** is a structured approach to assessing, monitoring, and improving the quality of data. An effective **Data Quality Framework** considers these dimensions and integrates them into a structured approach to ensure that data serves its intended purpose, supports informed decision-making, and maintains the trust of users and stakeholders.
+**Data Quality Framework Governance** is a structured approach to assessing, monitoring, and improving the quality of data. An effective **Data Quality Framework** considers these dimensions and integrates them into a structured approach to ensure that data serves its intended purpose, supports informed decision-making, and maintains the trust of users and stakeholders. **Data Quality** is an ongoing process that requires continuous monitoring, assessment, and improvement to adapt to changing data requirements and evolving business needs.
 
-**Data Quality** is an ongoing process that requires continuous monitoring, assessment, and improvement to adapt to changing data requirements and evolving business needs.
+
 
 **Example:** To call functions from the library.
 
-	from DataQualityFrameworkGovernance import Uniqueness as uq
-	print(uq.duplicate_rows(dataframe))
+	#variable declaration
+	df = pd.read_csv('https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv')
+	meta_member = ["Yes", "N"]
+
+	from  DataQualityFrameworkGovernance  import  Validity as vl
+	print(vl.isMetadataMember(df, 'replaced', meta_member,"No"))
+
+## 1. Installation of package
+    pip install DataQualityFrameworkGovernance
+
+## 2. JSON configuration
+
+For configuration, consider using online JSON configuration tools such as [markdownlivepreview](https://markdownlivepreview.com), [jsoneditoronline](https://jsoneditoronline.org), or any other tool of your preference.
 
 
-## Data Quality Framework (DataWorkflow & DataPipeline)
+<details>
+<summary><i>Configuration Guidelines</i></summary>
+
+- Ensure that the **DataFrameDictionary** specifies the source for all required datasets in CSV format.
+- In the **DataFunctionConfig** section, invoke functions from the library.
+- Use the **enabled** parameter, which can be set to True or False, to guide the framework on enabling or disabling specific functionalities.
+- Specify the **function_path** to indicate the function name and its path for a particular activity.
+- In the **parameters** field, provide the necessary parameters for the function, ensuring that the passed parameters align with the function's expected parameters.
+- The **calculate** parameter is crucial; set it to "Yes" to generate a data quality assessment report. While optional in cloud environments, it is recommended to set it to "Yes" for summarizing the data quality assessment report.
+- The first parameter in **DataFunctionConfig**, *user_info*, *comments*, etc., is developer comments.
+
+Consider these points during the configuration of the JSON file.
+
+</details>
+
+<details>
+<summary><i>Expand to view JSON sample (header)</i></summary>
+
+    {
+    "DataFrameDictionary": 
+    {
+        "data1": {"enabled": true,"data_path": "https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/data1.csv"},
+        "ecomm_data": {"enabled": true,"data_path": "https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv"}
+    },
+
+    "DataFunctionConfig":
+    [
+        {
+            "user_info":"Identifying completeness in a column - this line is user remark [OPTIONAL]",
+            "enabled": true,
+            "function_path": "DataQualityFrameworkGovernance.Completeness.missing_values_in_column",
+            "parameters": [{
+                "enabled": true,
+                "df":"ecomm_data",
+                "columnname":"address2",
+                "calculate":"Yes"
+                }]
+        },
+        {
+            "Comments":"Important: Array list to be called without double quotes outside array list",
+            "enabled": true,
+            "function_path": "DataQualityFrameworkGovernance.Validity.isMetadataMember",
+            "parameters": [{
+                "enabled": true,
+                "df":"ecomm_data",
+                "column_name_to_look":"replaced",
+                "array_list":["Yes", "N"],
+                "calculate":"Yes"
+                }]
+        }
+    ]
+    }
+
+</details>
+
+[View Github JSON sample](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/blob/main/Files/dq_pipeline_config.json)
+
+## 3. Run Data Quality Framework (DataWorkflow & DataPipeline)
 
 <details open>
 <summary><b>DataWorkflow.DataPipeline</b></summary>
@@ -22,7 +91,6 @@
 
 User configures **DataframeDictionary** and **DataFunctionConfig** in JSON file, based on the JSON file, data pipeline tasks will be performed in  processing framework.
 
-	import pandas as pd
 	from DataQualityFrameworkGovernance.DataWorkflow import DataPipeline as dp
 	
 	json_config_file = 'https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/dq_pipeline_config.json'
@@ -32,9 +100,12 @@ User configures **DataframeDictionary** and **DataFunctionConfig** in JSON file,
 
 *The output_csv parameter is optional in 'processing_framework' function, and if specified, the result will be saved **exclusively in CSV file format.** Please provide the full path, including the desired CSV file name, for saving the output.*
 
-*Refer [DataWorkflow](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/blob/main/DataQualityFrameworkGovernance.png)*, *[Pre-configured Json#array list = [10 sample](https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/dq_pipeline_config.json)*
+*Refer [DataWorkflow](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/blob/main/DataQualityFrameworkGovernance.png)*, *[Pre-configured Json](https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/dq_pipeline_config.json)*
 
-**Result**
+
+<details>
+<summary><i>View result</i></summary>
+
 |DateTime|DQ#|Dataset_name|DQ_Dimension|DQ_Rule/Function_name|Error_in_JSON|Error log|DQ_Rule/Function_description|DQ_Valid_count|DQ_Invalid_count|DQ_Total_count|DQ_Valid%|DQ_Invalid%|DQ_Flag_Inclusion|Data_enabled|Function_enabled|Parameter_enabled|Source|
 |--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
 |2023-12-23 11:44:13.324231|DQFGCP02|ecomm_data|Completeness|DataQualityFrameworkGovernance.Completeness.missing_values_in_column|No|No error in JSON config|"Parameter: df: 'ecomm_data', columnname: 'address2', calculate: 'Yes'"|7|43|50|14.000000000000002|86.0|Y|True|True|True|https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv|
@@ -42,14 +113,15 @@ User configures **DataframeDictionary** and **DataFunctionConfig** in JSON file,
 |2023-12-23 11:44:13.361530|DQFGAC01|ecomm_data|Accuracy|DataQualityFrameworkGovernance.Accuracy.accuracy_tolerance_numeric|No|No error in JSON config|"Parameter: df: 'ecomm_data', base_column: 'actual_price', lookup_column: 'discounted_price', tolerance_percentage: '0', calculate: 'Yes'"|0|50|50|0.0|100.0|Y|True|True|True|https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv|
 |2023-12-23 11:44:13.379107|DQFGAC02|ecomm_data|Accuracy|DataQualityFrameworkGovernance.Accuracy.accurate_number_range|No|No error in JSON config|"Parameter: df: 'ecomm_data', range_column_name: 'actual_price', lower_bound: '1', upper_bound: '1000', calculate: 'Yes'"|50|0|50|100.0|0.0|Y|True|True|True|https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv|
 |2023-12-23 11:44:13.395435|DQFGAC03|ecomm_data|Accuracy|DataQualityFrameworkGovernance.Accuracy.accurate_datetime_range|No|No error in JSON config|"Parameter: df: 'ecomm_data', range_column_name: 'purchase_datetime', from_date: '2023-05-01', to_date: '2023-05-28', date_format: '%Y-%m-%d', calculate: 'Yes'"|22|28|50|44.0|56.00000000000001|Y|True|True|True|https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv|
+</details>
 
 </details>
 </ul>
 </details>
 
-## Library structure
+## 4. Data Quality Dimensions
 
-<details open>
+<details>
 <summary><b>Accuracy</b></summary>
 
 <ul>
@@ -96,7 +168,7 @@ The datetime range filter guarantees the accuracy and adherence of data values t
 </ul>
 </details>
 
-<details open>
+<details>
 <summary><b>Completeness</b></summary>
 
 <ul>
@@ -124,7 +196,7 @@ Summary of missing values in a dataset.
 </ul>
 </details>
 
-<details open>
+<details>
 <summary><b>Consistency</b></summary>
 
 <ul>
@@ -148,7 +220,7 @@ If data in two columns is consistent, check if the "Start Date" and "End Date" c
 </details>
   
 
-<details open>
+<details>
 <summary><b>Uniqueness</b></summary>
 
 <ul>
@@ -178,7 +250,7 @@ Display **unique column values** in a dataset.
 </details>
 
 
-<details open>
+<details>
 <summary><b>Validity</b></summary>
 
 <ul>
@@ -330,7 +402,8 @@ Examines each value in a **dataset** and appends a new column for each existing 
 </ul>
 </details>
 
-<details open>
+## Other library structure
+<details>
 <summary><b>Datastats</b></summary>
 
 <ul>
@@ -383,7 +456,7 @@ Count the number of rows & columns in a DataFrame.
 </details>
 
 
-<details open>
+<details>
 <summary><b>Data Interoperability</b></summary>
 
 <ul>
