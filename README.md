@@ -1,4 +1,3 @@
-
 # Data Quality Framework Governance (DQFG)
 
 **Data Quality Framework Governance** is a structured approach to assessing, monitoring, and improving the quality of data. An effective **Data Quality Framework** considers these dimensions and integrates them into a structured approach to ensure that data serves its intended purpose, supports informed decision-making, and maintains the trust of users and stakeholders.
@@ -21,7 +20,7 @@
 <details>
 <summary><i>processing_framework</i></summary>
 
-User configures **DataframeDictionary** and **DataFunctionConfig** in JSON file, based on the JSON file data pipeline processing will be performed in  processing framework.
+User configures **DataframeDictionary** and **DataFunctionConfig** in JSON file, based on the JSON file, data pipeline tasks will be performed in  processing framework.
 
 	import pandas as pd
 	from DataQualityFrameworkGovernance.DataWorkflow import DataPipeline as dp
@@ -33,7 +32,7 @@ User configures **DataframeDictionary** and **DataFunctionConfig** in JSON file,
 
 *The output_csv parameter is optional in 'processing_framework' function, and if specified, the result will be saved **exclusively in CSV file format.** Please provide the full path, including the desired CSV file name, for saving the output.*
 
-*Refer [DataWorkflow](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/blob/main/DataQualityFrameworkGovernance.png)*, *[Pre-configured Json sample](https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/dq_pipeline_config.json)*
+*Refer [DataWorkflow](https://github.com/RajithPrabakaran/DataQualityFrameworkGovernance/blob/main/DataQualityFrameworkGovernance.png)*, *[Pre-configured Json#array list = [10 sample](https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/dq_pipeline_config.json)*
 
 **Result**
 |DateTime|DQ#|Dataset_name|DQ_Dimension|DQ_Rule/Function_name|Error_in_JSON|Error log|DQ_Rule/Function_description|DQ_Valid_count|DQ_Invalid_count|DQ_Total_count|DQ_Valid%|DQ_Invalid%|DQ_Flag_Inclusion|Data_enabled|Function_enabled|Parameter_enabled|Source|
@@ -90,7 +89,7 @@ The datetime range filter guarantees the accuracy and adherence of data values t
 	Example:
 	print(ac.accurate_datetime_range(df, 'Date', '2023-01-15', '2023-03-01', '%Y-%m-%d'))
 
-**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'* (Date format should be same as *source date format*) ***(It can be specified in any format aligned to *source* date format, parameter value to be aligned appropriately).***
+**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'*  ***(It can be specified in any format aligned to source date format).***
 
 </details>
 
@@ -135,25 +134,13 @@ Summary of missing values in a dataset.
 
 If data in two columns is consistent, check if the "Start Date" and "End Date" column are in the correct chronological order. 
 
-  
-  	from  DataQualityFrameworkGovernance  import  Consistency as ct
-	print(ct.start_end_date_consistency(dataframe, 'start_date_column_name', 'end_date_column_name', 'date_format'))
+	from  DataQualityFrameworkGovernance  import  Consistency as ct
+	#print(ct.start_end_date_consistency(dataframe, 'start_date_column_name', 'end_date_column_name', date_format))
+	
+	df = pd.read_csv('https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv')
+	print(ct.start_end_date_consistency(df, 'purchase_datetime', 'refund_date','%Y-%m-%d %H:%M:%S'))
 
-**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'*  ***(It can be specified in any format, parameter value to be aligned appropriately).***
-
-</details>
-
-
-<details>
-<summary><i>count_start_end_date_consistency</i></summary>
-
-Count of data in two columns is consistent, check if the "Start Date" and "End Date" column are in the correct chronological order. 
-
-  
-  	from  DataQualityFrameworkGovernance  import  Consistency as ct
-	print(ct.count_start_end_date_consistency(dataframe, 'start_date_column_name', 'end_date_column_name', 'date_format'))
-  
-**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'*  ***(It can be specified in any format, parameter value to be aligned appropriately).***
+**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'*  ***(It can be specified in any format aligned to source date format).***
 
 </details>
 
@@ -187,16 +174,6 @@ Display **unique column values** in a dataset.
 
 </details>
 
-<details>
-<summary><i>unique_column_count</i></summary>
-
-Count **unique column values** in a dataset. 
-
-	from  DataQualityFrameworkGovernance  import  Uniqueness as uq
-	print(uq.unique_column_count(dataframe, 'column_name'))
-
-</details>
-
 </ul>
 </details>
 
@@ -217,16 +194,6 @@ Validate age based on the criteria in a dataset.
 </details>
 
 <details>
-<summary><i>validate_age_count</i></summary>
-
-Count age based on the criteria in a dataset. 
-
-  	from  DataQualityFrameworkGovernance  import  Validity as vl
-	print(vl.validate_age_count(dataframe, 'age_column', min_age, max_age))
-
-</details>
-
-<details>
 <summary><i>vaild_email_pattern</i></summary>
 
 Validating accuracy of email addresses in a dataset by verifying that they follow a valid email format.
@@ -237,28 +204,50 @@ Validating accuracy of email addresses in a dataset by verifying that they follo
 </details>
 
 <details>
-<summary><i>is_within_range</i></summary>
+<summary><i>isMetadataMember</i></summary>
 
 If all values in a given array list are present in a specific column of a dataset then it provides a status message indicating whether all names are found or not. **Array values must be within square brackets.**
-
-  	#Examples
-  	#array list = ["Tom", "Jerry", "Donald"] - Text
+    
+    #Examples
+    #array list = ["Tom", "Jerry", "Donald"] - Text
 	#array list = [10, 20, 30] - Numeric
 	#array list = [True, False] - Boolean
 	#array list = [0, 1] - Flag
 
 	from  DataQualityFrameworkGovernance  import  Validity as vl
-	print(vl.is_within_range(dataframe, 'column_name_to_look', [array_list]))
+	df = pd.read_csv('https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv')
+	meta_member = ["Yes", "N"]
+	
+	print(vl.isMetadataMember(df, 'replaced', meta_member,"No"))
+	#print(vl.isMetadataMember(dataframe, 'column_name_to_look', [array_list]))
+	#Parameter 'No' is optional to enable and disable calculation
+
 
 </details>
 
 <details>
-<summary><i>is_number_in_column</i></summary>
+<summary><i>is_column_numeric</i></summary>
 
- Examines each value in a **column** and appends a new column to the existing column, indicating whether the values are numeric.
+ Examines each value in a **column** and appends a new column to the existing column, indicating whether the column is numeric.
 
 	from  DataQualityFrameworkGovernance  import  Validity as vl
-	print(vl.is_number_in_column(dataframe, 'column_name'))
+	df = pd.read_csv('https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv')
+    print(vl.is_column_numeric(df, 'actual_price'))
+	
+	#print(vl.is_column_numeric(dataframe, 'column_name'))
+
+</details>
+
+<details>
+<summary><i>contains_number_in_column</i></summary>
+
+ Examines each value in a **column** and appends a new column to the existing column, indicating whether the values contains numeric.
+
+	from  DataQualityFrameworkGovernance  import  Validity as vl
+	df = pd.read_csv('https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv')
+    print(vl.contains_number_in_column(df, 'product_name'))
+	
+	#print(vl.contains_number_in_column(dataframe, 'column_name'))
 
 </details>
 
@@ -276,12 +265,15 @@ Examines each value in a **dataset** and appends a new column for each existing 
 </details>
 
 <details>
-<summary><i>is_text_in_column</i></summary>
+<summary><i>textonly_in_column</i></summary>
 
  Examines each value in a **column** and appends a new column to the existing column, indicating whether the values are text. **Result would be false, if text or string contains number.**
 
 	from  DataQualityFrameworkGovernance  import  Validity as vl
-	print(vl.is_text_in_column(dataframe, 'column_name'))
+	df = pd.read_csv('https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv')
+    print(vl.textonly_in_column(df,'product_description'))
+
+	#print(vl.textonly_in_column(dataframe, 'column_name'))
 
 </details>
 
@@ -306,7 +298,7 @@ Examines each value in a **dataset** and appends a new column for each existing 
 	from  DataQualityFrameworkGovernance  import  Validity as vl
 	print(vl.is_date_in_column(dataframe,'column_name', date_format))
 
-**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'*  ***(It can be specified in any format, parameter value to be aligned appropriately).***
+**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'*  ***(It can be specified in any format aligned to source date format).***
 
 </details>
 
@@ -316,12 +308,16 @@ Examines each value in a **dataset** and appends a new column for each existing 
  Examines each value in a **dataset** and appends a new column for each existing column, indicating whether the values are in date time, in a speciifed format.
 
 	from  DataQualityFrameworkGovernance  import  Validity as vl
-	print(vl.is_date_in_dataset(dataframe, date_format))
+	df = pd.read_csv('https://raw.githubusercontent.com/RajithPrabakaran/DataQualityFrameworkGovernance/main/Files/ecommerce_dataset.csv')
+	print(vl.is_date_in_dataset(df,'%Y-%m-%d %H:%M:%S'))
+
+    #print(vl.is_date_in_dataset(df[['purchase_datetime','product_name']],'%Y-%m-%d %H:%M:%S'))
+	#print(vl.is_date_in_dataset(dataframe, date_format))
 
 	#Example for specific column selection
 	is_date_in_dataset(dataframe[['column1','column7']], date_format='%Y-%m-%d')
 
-**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'*  ***(It can be specified in any format, parameter value to be aligned appropriately).***
+**Important**: Specify date format in *'%Y-%m-%d %H:%M:%S.%f'*  ***(It can be specified in any format aligned to source date format).***
 
 </details>
 
